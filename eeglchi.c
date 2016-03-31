@@ -70,18 +70,17 @@ int main()
       diff = expected - *p;             /* expected - actual */
       diffsq = diff * diff;             /* square the difference */
       chisq += (diffsq / expected);     /* add to chi square total */
-      printf("i %d actual %.0f expected %.0f diff %.0f\n",
-         16-i, *p, expected, diff);
       p++;
       } /* for each tally */
    /****************/
    /* print report */
    /****************/
+   printf("Uniform distribution chi square test\n");
    printf("Total samples 16384\n");
    printf("Chi square %f\n", chisq);
    printf("15 degrees of freedom\n");
-   printf("Chi square at  5%c is  7.261\n", '%');
-   printf("Chi square at 95%c is 24.996\n", '%');
+   printf("95%c of the time, the chi square is "
+      "between 7.261 and 24.996\n", '%');
    free(ee->state);
    free(ee);
    return(0);            /* normal eoj */
