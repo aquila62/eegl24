@@ -1,0 +1,128 @@
+eegl24 is a random number generator (RNG) that produces bits in a
+uniform distribution.  This version of eegl is based on 1 to 2000
+24-bit linear feedback shift registers (LFSR), called states.  The
+eegl generator may be implemented with LFSR registers of various
+sizes.  The original version of eegl uses 32-bit LFSR registers.
+To see the original version of eegl, go to the eegl repository.
+
+Each cycle of the generator uses a GNU Scientific Library (GSL) RNG,
+called taus, to select an LFSR at random.  The weaknesses of LFSR
+generators are eliminated by the random selection of one among many
+LFSR registers.  The number of LFSR registers does not affect the
+performance of the generator.  The performance is the same, whether
+the generator uses 1 register or 2000 registers.  Using more than
+2000 registers does not improve the generator's randomness to a
+significant extent.
+
+The period length of eegl depends on the number of LFSR registers.
+If 2000 registers are used, the period length is 2^48000 cycles.
+That is (2^24)^2000 or 2^(24*2000) cycles.  This period length
+exceeds the period length of the Mersenne Twister, which has a
+period length of 2^19937.  At these lengths, the length of a
+random number generator is not an issue.  The choice of 2000
+registers is arbitrary.  It could be 2 million registers on a
+large computer.
+
+Test results.
+
+The eegl24 random number generator has tested successfully with 
+2000 states in the following tests.
+
+    dieharder -a
+    TestU01 Crush
+    National Institute of Standards and Technology STS test suite.
+
+The dieharder test yielded three weak p-values that were above
+0.99.  That meant that the three weak test results were too 
+good to be random.  There were no fails in the dieharder test.
+The three weak tests were re-run with successful results.
+
+The TestU01 Crush test ran with no fails.
+
+Most of the STS tests are easy to pass, and so passing them does
+not validate a generator to any great degree.  Nevertheless,
+eegl passed the STS suite of tests, especially the harder tests.
+TestU01 incorporates the STS suite of tests into its own Crush
+suite.  Dieharder incorporates George Marsaglia's original diehard
+suite of tests.
+
+LFSR random number generators are known to fail linear complexity
+tests.  The matrix rank test is one of test that frequently fails
+with an LFSR RNG.  However, eegl passes these tests, perhaps
+because it selects randomly from among 2000 LFSR registers.  I have
+run eegl tests that failed with 1 state but passed with 2-2000 states.
+
+Benchmarking.
+
+eegl performs at about 80% of the speed of the fastest RNGs in
+the GNU Scientific Library (GSL).  eegl performs twice as fast
+as the ranlux family of delux random number generators.  These
+measurements were made with my own benchmarking program.
+
+When testing eeglraw as input to dieharder -g 200, be cautioned
+that the raw input feature of dieharder slows down the test.
+It is better to integrate eegl into dieharder as an internal
+random number generator in the 600 series of generators.
+
+The same is true with TestU01.  It is better to integrate eegl
+as an internal random number generator in order to speed up the
+test.
+
+Initialization.
+
+There is only one restriction in initializing 2000 states in eegl.
+An LFSR random number generator must be initialized to non zero
+values.  eegl is initialized to as many as 4800 bytes of non zero
+random values.  If you wish, you may override the initial values
+of the state array, so that you may conduct regression tests. You
+will also have to initialize the GSL taus random number generator
+to an arbitrary value.
+
+Initializing an LFSR register to a random value is made possible
+by the way the LFSR works.  Each value in a 24-bit LFSR occurs once
+and only once during its (2^24)-1 cycles, before it repeats itself.
+Therefore, no non-zero value in an LFSR is "bad" for the generator.
+This is not the case in other random number generators, which
+have restrictions in how they may be initialized.
+
+Since LFSR generators fail linear correlation tests, an argument
+may be made that there are "bad" initial values possible in an
+LFSR generator.  But having 2000 states in the generator circumvents
+this problem.  eegl passes linear correlation tests with 2000
+states.
+
+Distributed processing.
+
+eegl is conducive to running on a Beowulf style of supercomputer.
+Each of its 2000 LFSR registers may be manipulated independently
+in separate nodes.  I see no reason why eegl could not keep pace
+with the fastest supercomputer in a scientific experiment.
+
+Supporting subroutines.
+
+The eegl generator has three subroutines that depend on it.
+The calling program is responsible for passing valid parameters.
+Each subroutine may be called billions of times in a scientific
+experiment, and validation in the subroutine would be redundant
+in most cases.
+
+eeglunif.c produces a uniform random number from 0 - 1.  Its only
+parameter is the eegl structure.
+
+eeglint.c produces a uniform random integer from 0 up to a limit.
+It has two parameters, the eegl structure, and the limit.  The
+limit may be negative or positive.
+
+eeglpwr.c produces an unsigned integer of 1 to 32 bits.  It has
+two parameters, the eegl structure, and the number of bits.
+
+eeglgen.c produces an ASCII bit stream of zeroes and ones to stdout.
+
+eeglraw.c produces a raw stream of 32 bit unsigned integers to stdout.
+
+These last two programs are used to feed random data into down stream
+programs, such as the dieharder or STS suite of tests.
+
+See TESTING for more information.
+
+The website for eegl is at https://aquila62.github.io.

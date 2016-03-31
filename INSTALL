@@ -1,0 +1,25 @@
+Installing eegl:
+
+Be sure you have installed the GNU Scientific Library.
+
+sudo apt-get install libgsl0-dev
+
+Make shell scripts executable.
+
+chmod 755 *.sh
+
+Next compile the programs.
+
+./inst.sh
+
+To de-install eegl:
+
+./deinst.sh
+
+To see how to test eegl, read TESTING.
+Some of these test programs use new curses, X Windows,
+and dieharder.
+
+To read about the eegl generator, read README.eegl24.
+
+To see the eegl website, go to https://aquila62.github.io 

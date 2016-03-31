@@ -1,0 +1,119 @@
+The visual tests included here do not occur in dieharder or
+TestU01.  Dieharder and TestU01 have statistical versions of
+these tests.  To test eegl with dieharder or TestU01, feed
+the output from eeglraw into those test suites.
+
+------------------------------------------------------
+
+Test eegl by running tsteegl.  There are no parameters.
+
+./tsteegl
+
+The output from tsteegl is a block of 1000 random bits.
+
+------------------------------------------------------
+
+eegl uniform distribution chi square test.
+There are no parameters.
+
+./eeglchi
+
+The output from eeglchi is a chi square of 16384
+4-bit samples.  Number of degrees of freedom is 15.
+
+------------------------------------------------------
+
+Binomial distribution chi square test.
+There are no parameters.
+
+./binom
+
+The output from binom is a chi square of 65536
+16-bit samples.  Number of degrees of freedom is 16.
+
+------------------------------------------------------
+
+Test eeglunif() and eeglint() by running tstnc.
+This test requires the new curses package.
+
+sudo apt-get install libncurses-dev
+
+tstnc uses one parameter, the number of states in eegl.
+
+./tstnc 2000
+
+The output from tstnc is a random pattern of ASCII characters
+on a curses screen.  To quit press 'q'.
+
+------------------------------------------------------
+
+Test eeglpwr() by running tstdots.
+This test requires X Windows.
+
+sudo apt-get install libx11-dev
+
+tstdots uses one parameter, the number of states in eegl.
+
+./tstdots 2000
+
+The output from tstdots is a random bitmap pattern of pixels 
+on an X Windows screen.  To quit press 'q'.
+
+------------------------------------------------------
+
+Random Walk Test:  tstwlk.sh
+tstwlk.sh illustrates a random bit stream piped into a
+down stream program.
+This test requires X Windows.  See sudo apt-get above.
+tstwlk.sh uses one parameter, the number of states in eegl.
+
+./tstwlk.sh 2000
+
+The output from tstwlk.sh is a random walk relative to a midpoint
+line on an X Windows screen.  To quit press any key.
+
+------------------------------------------------------
+
+Random Powerball Simulation:  pwrball
+pwrball is a random lottery game based on real odds
+and real pay-outs.
+This test requires new curses.  See apt-get above.
+
+./pwrball
+
+The output from pwrball shows money spent and money
+received for each prize level.  To quit press 'q'.
+The grand totals are in millions of dollars.
+The lesser prizes are in thousands of dollars.
+
+------------------------------------------------------
+
+Dieharder Test:  tstdie.sh
+Dieharder has to be installed first.
+
+sudo apt-get install libdieharder-dev
+sudo apt-get install dieharder
+
+tstdie.sh illustrates a raw stream of random data piped into a
+down stream test suite.
+
+./tstdie.sh
+
+The output from tstdie.sh is a statistical report.
+This is a long running test.  To interrupt press CTRL-C.
+The first test takes half minute to print a report.
+
+------------------------------------------------------
+
+TestU01 is more difficult to run with the eegl generator.
+You have to download the TestU01 package and then compile it.
+Then you have to write and compile a test program in the
+examples directory of TestU01.  The short guide for TestU01
+gives you examples of how to set up a test.  In particular,
+you need to use ufile to read input from eeglraw in your test.
+After you get over the learning curve, you will be rewarded
+with some strong and varied tests.
+
+------------------------------------------------------
+
+The website for eegl is at https://aquila62.github.io.
