@@ -33,6 +33,20 @@ The output from binom is a chi square of 65536
 
 ------------------------------------------------------
 
+Poisson distribution chi square test.
+There are two parameters, lambda and size of population.
+
+./poischi lambda size
+
+Example:
+
+./poischi 6 100000
+
+The output from poischi is the chi square with
+number of degrees of freedom, based on lambda.
+
+------------------------------------------------------
+
 Test eeglunif() and eeglint() by running tstnc.
 This test requires the new curses package.
 
